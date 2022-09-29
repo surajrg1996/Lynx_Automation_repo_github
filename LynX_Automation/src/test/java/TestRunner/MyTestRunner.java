@@ -14,7 +14,8 @@ import io.cucumber.junit.CucumberOptions;
 			dryRun= false,
 			monochrome=true,
 			//tags= " @Examples ",
-			plugin= {"pretty","html:target/test.html","com.aventstack.extentreports.cucumber.adapter.ExtentCucumberAdapter:"}
+			plugin= {"pretty","html:target/test.html","com.aventstack.extentreports.cucumber.adapter.ExtentCucumberAdapter:"
+					,"rerun:target/failedrerun.txt"}
 				
 			
 			)
