@@ -15,17 +15,17 @@
 
 	</properties>
 	
-	<repositories>
-		<repository>
-			<id>jitpack.io</id>
-			<url>https://jitpack.io</url>
-		</repository>
-	</repositories>
+		<repositories>
+			<repository>
+				<id>jitpack.io</id>
+				<url>https://jitpack.io</url>
+			</repository>
+		</repositories>
   
   <dependencies>
   
   
-  <dependency>
+ 		<dependency>
 			<groupId>io.cucumber</groupId>
 			<artifactId>cucumber-java</artifactId>
 			<version>${cucumber.version}</version>
@@ -39,12 +39,14 @@
 			<scope>test</scope>
 		</dependency>
 
+		<!-- https://mvnrepository.com/artifact/junit/junit -->
 		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>${junit.version}</version>
-			<scope>test</scope>
+   			 <groupId>junit</groupId>
+   			 <artifactId>junit</artifactId>
+  			 <version>4.13.2</version>
+    		 <scope>test</scope>
 		</dependency>
+
 
 		<dependency>
 			<groupId>org.seleniumhq.selenium</groupId>
@@ -52,7 +54,7 @@
 			<version>3.141.59</version>
 		</dependency>
 
-<dependency>
+		<dependency>
 			<groupId>io.github.bonigarcia</groupId>
 			<artifactId>webdrivermanager</artifactId>
 			<version>4.2.2</version>
@@ -89,19 +91,20 @@
 		
 		
 		<dependency>
-   <groupId>tech.grasshopper</groupId>
-   <artifactId>extentreports-cucumber7-adapter</artifactId>
-   <version>1.7.0</version>
-   <scope>test</scope>
-</dependency>
+  			<groupId>tech.grasshopper</groupId>
+   			<artifactId>extentreports-cucumber7-adapter</artifactId>
+   			<version>1.7.0</version>
+   			<scope>test</scope>
+		</dependency>
 
-<!-- https://mvnrepository.com/artifact/com.aventstack/extentreports -->
-<dependency>
-    <groupId>com.aventstack</groupId>
-    <artifactId>extentreports</artifactId>
-    <version>5.0.9</version>
-</dependency>
-		
+		<!-- https://mvnrepository.com/artifact/com.aventstack/extentreports -->
+		<dependency>
+    		<groupId>com.aventstack</groupId>
+    		<artifactId>extentreports</artifactId>
+    		<version>5.0.9</version>
+		</dependency>
+
+	
 </dependencies>
   
   
@@ -110,35 +113,80 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>2.3.2</version>
+				<version>${maven.compiler.version}</version>
 				<configuration>
-					<source>1.8</source>
-					<target>1.8</target>
+					<encoding>UTF-8</encoding>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
 				</configuration>
 			</plugin>
+			
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-resources-plugin</artifactId>
 				<version>2.7</version>
 			</plugin>
+			
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-failsafe-plugin</artifactId>
-				<version>3.0.0-M4</version>
-				<executions>
-					<execution>
-						<goals>
-							<goal>integration-test</goal>
-							<goal>verify</goal>
-						</goals>
-						<!-- <configuration> <properties> <property> <name>dataproviderthreadcount</name> 
-							<value>4</value> </property> </properties> </configuration> -->
-						<!-- <configuration> <parallel>methods</parallel> <threadCount>4</threadCount> 
-							<perCoreThreadCount>true</perCoreThreadCount> </configuration> -->
-
-					</execution>
-				</executions>
-			</plugin>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>${maven.surefire.version}</version>
+				<configuration>
+					<includes>
+						<include>**/ParallelRun.java</include>
+					</includes>
+					<parallel>methods</parallel>
+					<threadCountMethods>3</threadCountMethods>
+					<perCoreThreadCount>true</perCoreThreadCount> 
+					<useUnlimitedThreads>false</useUnlimitedThreads>
+					
+				</configuration>
+			</plugin>	
+			
+			
+			<plugin> 
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-failsafe-plugin</artifactId> 
+			<version>3.0.0-M3</version> 
+			<executions> <execution> 
+			<goals> <goal>integration-test</goal> 
+			</goals> 
+			<configuration>
+			
+			<!-- UNCOMMENT - To add any exclusions if required -->
+			<!--  <excludes> 
+				<exclude>**/*IT*.java</exclude> 
+			</excludes> 
+			-->
+				
+			<includes> 
+			<!--  UNCOMMENT BELOW LINE - To execute feature files with a single runner -->
+			
+			<include>**/MyTestRunner.java</include>
+			 
+			<!-- UNCOMMENT BELOW LINE - To execute feature files with multiple runners -->
+			
+			<!-- 	<include>**/*Runner.java</include> -->
+			</includes> 
+				
+			<!--	UNCOMMENT BELOW 3 LINES - To execute using parallel or combination option -->
+			
+			<parallel>methods</parallel> 
+			<threadCount>4</threadCount> 
+			<perCoreThreadCount>true</perCoreThreadCount> 
+			
+			<!--	UNCOMMENT BELOW 3 LINES - To execute using forking or combination option -->
+			<!-- 
+			<forkCount>2</forkCount>
+			 <reuseForks>true</reuseForks> 
+			 <reportsDirectory>${project.build.directory}/failsafe-reports_${surefire.forkNumber}</reportsDirectory> 
+			 -->
+					</configuration> 
+				</execution>
+			 </executions>
+		 </plugin>
+			
+						
 		</plugins>
 	</build>
   
